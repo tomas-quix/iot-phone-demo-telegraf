@@ -293,7 +293,7 @@ topics:
       partitions: 2
       replicationFactor: 2
       retentionInMinutes: -1
-      retentionInBytes: 1048576000
+      retentionInBytes: 52428800
   - name: telegraf_metrics
     configuration:
       replicationFactor: 2
