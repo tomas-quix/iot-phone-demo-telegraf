@@ -70,7 +70,7 @@ func (q *Quix) Connect() error {
 	config.Net.SASL.User = quixConfig.SaslUsername
 	config.Net.SASL.Password = quixConfig.SaslPassword
     
-    switch quixConfig.SASL.Mechanism {
+    switch quixConfig.SaslMechanism {
 	case "SCRAM-SHA-512":
 		config.Net.SASL.SCRAMClientGeneratorFunc = func() sarama.SCRAMClient {
 			return &XDGSCRAMClient{HashGeneratorFcn: sha512.New}
