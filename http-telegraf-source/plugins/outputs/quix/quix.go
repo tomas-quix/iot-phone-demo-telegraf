@@ -69,8 +69,7 @@ func (q *Quix) Connect() error {
 	config.Net.SASL.Enable = true
 	config.Net.SASL.User = quixConfig.SaslUsername
 	config.Net.SASL.Password = quixConfig.SaslPassword
-	config.Net.SASL.Mechanism = sarama.SASLTypeSCRAMSHA256
-
+    
     switch quixConfig.SASL.Mechanism {
 	case "SCRAM-SHA-512":
 		config.Net.SASL.SCRAMClientGeneratorFunc = func() sarama.SCRAMClient {
@@ -85,7 +84,7 @@ func (q *Quix) Connect() error {
 	default:
 		log.Fatalf("Unsupported SASL mechanism: %s", quixConfig.SASL.Mechanism)
 	}
-
+    
 	tlsConfig, err := q.createTLSConfig(cert)
 	if err != nil {
 		return err
