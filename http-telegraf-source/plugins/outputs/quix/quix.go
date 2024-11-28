@@ -3,6 +3,7 @@ package quix
 
 import (
 	"crypto/sha256"
+	"crypto/sha512"
 	"strings"
 
 	"github.com/IBM/sarama"
