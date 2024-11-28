@@ -83,7 +83,7 @@ func (q *Quix) Connect() error {
 		}
 		config.Net.SASL.Mechanism = sarama.SASLTypeSCRAMSHA256
 	default:
-		log.Fatalf("Unsupported SASL mechanism: %s", quixConfig.SaslMechanism)
+		q.Log.Fatalf("Unsupported SASL mechanism: %s", quixConfig.SaslMechanism)
 	}
     
 	tlsConfig, err := q.createTLSConfig(cert)
