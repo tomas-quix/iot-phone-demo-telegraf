@@ -29,7 +29,6 @@ type Quix struct {
 	Workspace      string          `toml:"workspace"`
 	Topic          string          `toml:"topic"`
 	Token          config.Secret   `toml:"token"`
-	TimestampUnits config.Duration `toml:"timestamp_units"`
 	Log            telegraf.Logger `toml:"-"`
 	common_http.HTTPClientConfig
 
