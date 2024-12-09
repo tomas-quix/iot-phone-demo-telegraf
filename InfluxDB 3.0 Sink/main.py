@@ -47,6 +47,7 @@ influxdb_v3_sink = InfluxDBV3Sink(
                             measurement=measurement_name)
 
 sdf = app.dataframe(input_topic)
+sdf = sdf.filter(lambda row, key, *_: key == "cpu", metadata=True)
 #sdf.print()
 sdf.sink(influxdb_v3_sink)
 
