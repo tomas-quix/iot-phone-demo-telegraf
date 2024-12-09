@@ -48,6 +48,7 @@ influxdb_v3_sink = InfluxDBV3Sink(
 
 sdf = app.dataframe(input_topic)
 sdf = sdf.filter(lambda row, key, *_: bytes.decode(key) == "cpu", metadata=True)
+sdf = sdf.filter(lambda row: "host" in row["tags"] & "cpu" in row["tags"])
 sdf.print()
 sdf.sink(influxdb_v3_sink)
 
