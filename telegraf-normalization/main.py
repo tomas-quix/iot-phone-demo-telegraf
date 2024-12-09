@@ -13,7 +13,7 @@ output_topic = app.topic(os.environ["output"])
 sdf = app.dataframe(input_topic)
 
 
-#sdf = sdf.set_timestamp(lambda row, *_: row["timestamp"])
+sdf = sdf.set_timestamp(lambda row, *_: int(row["timestamp"] / 1E6))
 
 sdf = sdf.apply(lambda row: {
     **row["fields"],
