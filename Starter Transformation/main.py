@@ -12,7 +12,7 @@ output_topic = app.topic(os.environ["output"])
 
 sdf = app.dataframe(input_topic)
 
-sdf = sdf.hopping_window(5000).count().final()
+sdf = sdf.tumbling_window(5000).count().final()
 
 sdf.print()
 sdf.to_topic(output_topic)
