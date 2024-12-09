@@ -11,6 +11,7 @@ load_dotenv()
 
 app = Application(consumer_group="data_source", auto_create_topics=True)  # create an Application
 
+
 # define the topic using the "output" environment variable
 topic_name = os.environ["output"]
 topic = app.topic(topic_name)

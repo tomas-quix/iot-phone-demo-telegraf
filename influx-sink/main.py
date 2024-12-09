@@ -52,6 +52,7 @@ service_start_state = True
 last_write_time_ns = int(time() * 1e9)  # Convert current time from seconds to nanoseconds
 
 
+
 def send_data_to_influx(messages: List[dict]):
 
     points_buffer = []
