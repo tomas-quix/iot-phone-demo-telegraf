@@ -273,6 +273,20 @@ deployments:
         description: ''
         required: true
         secretKey: influx_token
+  - name: Telegraf source
+    application: telegraf-source
+    version: latest
+    deploymentType: Service
+    resources:
+      cpu: 200
+      memory: 500
+      replicas: 1
+    variables:
+      - name: output
+        inputType: OutputTopic
+        description: This is the Quix Topic that will receive the stream
+        required: true
+        value: telegraf
 
 # This section describes the Topics of the data pipeline
 topics:
