@@ -42,7 +42,6 @@ influxdb_v3_sink = InfluxDBV3Sink(
                             host=os.environ["INFLUXDB_HOST"],
                             organization_id=os.environ["INFLUXDB_ORG"],
                             tags_keys=tag_keys,
-                            fields_keys=field_keys,
                             time_key=timestamp_column,
                             database=os.environ["INFLUXDB_DATABASE"],
                             measurement=measurement_name)
