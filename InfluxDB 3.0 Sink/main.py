@@ -54,6 +54,7 @@ sdf = sdf.apply(lambda row: {
     **row,
     **row["tags"]
 })
+sdf = sdf.drop("tags")
 sdf.print()
 sdf.sink(influxdb_v3_sink)
 
