@@ -17,7 +17,6 @@ import (
 	common_http "github.com/influxdata/telegraf/plugins/common/http"
 	common_kafka "github.com/influxdata/telegraf/plugins/common/kafka"
 	"github.com/influxdata/telegraf/plugins/outputs"
-	"github.com/influxdata/telegraf/plugins/serializers"
 	"github.com/influxdata/telegraf/plugins/serializers/json"
 )
 
@@ -25,15 +24,15 @@ import (
 var sampleConfig string
 
 type Quix struct {
-	APIURL         string          `toml:"api_url"`
-	Workspace      string          `toml:"workspace"`
-	Topic          string          `toml:"topic"`
-	Token          config.Secret   `toml:"token"`
-	Log            telegraf.Logger `toml:"-"`
+	APIURL    string          `toml:"url"`
+	Workspace string          `toml:"workspace"`
+	Topic     string          `toml:"topic"`
+	Token     config.Secret   `toml:"token"`
+	Log       telegraf.Logger `toml:"-"`
 	common_http.HTTPClientConfig
 
 	producer   sarama.SyncProducer
-	serializer serializers.Serializer
+	serializer telegraf.Serializer
 	kakfaTopic string
 }
 
@@ -84,7 +83,6 @@ func (q *Quix) Connect() error {
 	cfg.Producer.Return.Successes = true
 
 	switch quixConfig.SecurityProtocol {
-
 	case "SASL_SSL":
 		cfg.Net.SASL.Enable = true
 		cfg.Net.SASL.User = quixConfig.SaslUsername
@@ -108,7 +106,7 @@ func (q *Quix) Connect() error {
 		case "PLAIN":
 			cfg.Net.SASL.Mechanism = sarama.SASLTypePlaintext
 		default:
-			q.Log.Errorf("Unsupported SASL mechanism: %s", quixConfig.SaslMechanism)
+			return fmt.Errorf("unsupported SASL mechanism: %s", quixConfig.SaslMechanism)
 		}
 
 		// Certificate
@@ -118,18 +116,16 @@ func (q *Quix) Connect() error {
 		}
 		cfg.Net.TLS.Enable = true
 		cfg.Net.TLS.Config = &tls.Config{RootCAs: certPool}
-
 	case "PLAINTEXT":
 		// No additional configuration required for plaintext communication
-
 	default:
-		q.Log.Errorf("Unsupported security protocol: %s", quixConfig.SecurityProtocol)
+		return fmt.Errorf("unsupported security protocol: %s", quixConfig.SecurityProtocol)
 	}
 
 	// Setup the Kakfa producer itself
 	producer, err := sarama.NewSyncProducer(brokers, cfg)
 	if err != nil {
-		return err
+		return fmt.Errorf("creating producer failed: %w", err)
 	}
 	q.producer = producer
 
