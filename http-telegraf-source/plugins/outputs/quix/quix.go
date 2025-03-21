@@ -67,6 +67,15 @@ func (q *Quix) Init() error {
 	return nil
 }
 
+func (k *Kafka) routingKey(metric telegraf.Metric) (string, error) {
+	
+    u, err := uuid.NewV4()
+    if err != nil {
+        return "", err
+    }
+    return u.String(), nil
+}
+
 func (q *Quix) Connect() error {
 	// Fetch the Kafka broker configuration from the Quix HTTP endpoint
 	quixConfig, err := q.fetchBrokerConfig()
@@ -144,7 +153,7 @@ func (q *Quix) Write(metrics []telegraf.Metric) error {
 			Topic:     q.kakfaTopic,
 			Value:     sarama.ByteEncoder(serialized),
 			Timestamp: m.Time(),
-			Key:       sarama.StringEncoder("telegraf"),
+			Key:       sarama.StringEncoder(k.routingKey(metric)),
 		}
 
 		if _, _, err = q.producer.SendMessage(msg); err != nil {
